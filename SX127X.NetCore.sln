@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01.ShieldSPITransferFullDup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02.RegisterScan", "RegisterScan\02.RegisterScan.csproj", "{FFF7F7AB-0CD2-468A-8BC7-6FBF10AF089F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegisterReadAndWrite", "RegisterReadAndWrite\RegisterReadAndWrite.csproj", "{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FFF7F7AB-0CD2-468A-8BC7-6FBF10AF089F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFF7F7AB-0CD2-468A-8BC7-6FBF10AF089F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFF7F7AB-0CD2-468A-8BC7-6FBF10AF089F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
