@@ -96,7 +96,7 @@ namespace devMobile.IoT.SX127x.RegisterReadAndWrite
 			return readBuffer[writeBuffer.Length - 1];
 		}
 
-		public ushort ReadWord(byte registerAddress)
+		public ushort ReadWordMsbLsb(byte registerAddress)
 		{
 			Span<byte> writeBuffer = stackalloc byte[3];
 			Span<byte> readBuffer = stackalloc byte[writeBuffer.Length];
@@ -120,7 +120,7 @@ namespace devMobile.IoT.SX127x.RegisterReadAndWrite
 				gpioController.Write(ChipSelectLogicalPinNumber, PinValue.High);
 			}
 
-			return (ushort)(readBuffer[2] + (readBuffer[1] << 8));
+			return (ushort)((readBuffer[1] << 8) + readBuffer[2]);
 		}
 
 		public byte[] ReadBytes(byte registerAddress, byte length)
@@ -176,7 +176,7 @@ namespace devMobile.IoT.SX127x.RegisterReadAndWrite
 			}
 		}
 
-		public void WriteWord(byte address, ushort value)
+		public void WriteWordMsbLsb(byte address, ushort value)
 		{
 			Span<byte> writeBuffer = stackalloc byte[3];
 			Span<byte> readBuffer = stackalloc byte[writeBuffer.Length];
@@ -288,14 +288,14 @@ namespace devMobile.IoT.SX127x.RegisterReadAndWrite
 
 
 			Console.WriteLine("Read the preamble (read word)"); // Should be 0x08
-			preamble = sX127XDevice.ReadWord(0x20);
+			preamble = sX127XDevice.ReadWordMsbLsb(0x20);
 			Debug.WriteLine($"Preamble 0x{preamble:x2} - Bits {Convert.ToString(preamble, 2).PadLeft(16, '0')}");
 
 			Console.WriteLine("Set the preamble to 0x8000 (write word)");
-			sX127XDevice.WriteWord(0x20, 0x8000);
+			sX127XDevice.WriteWordMsbLsb(0x20, 0x8000);
 
 			Console.WriteLine("Read the preamble (read word)"); // Should be 0x08
-			preamble = sX127XDevice.ReadWord(0x20);
+			preamble = sX127XDevice.ReadWordMsbLsb(0x20);
 			Debug.WriteLine($"Preamble 0x{preamble:x2} - Bits {Convert.ToString(preamble, 2).PadLeft(16, '0')}");
 
 
