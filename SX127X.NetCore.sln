@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02.RegisterScan", "Register
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.RegisterReadAndWrite", "RegisterReadAndWrite\03.RegisterReadAndWrite.csproj", "{3B83DF6B-D3E2-4A87-A256-BE6B36F23C39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransmitBasic", "TransmitBasic\TransmitBasic.csproj", "{2828B1E1-FB03-46D2-BA97-F84276F4FA61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.TransmitBasic", "TransmitBasic\04.TransmitBasic.csproj", "{2828B1E1-FB03-46D2-BA97-F84276F4FA61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiveBasic", "ReceiveBasic\ReceiveBasic.csproj", "{6F88A137-DCAE-431F-9DC5-58B1A9969773}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{2828B1E1-FB03-46D2-BA97-F84276F4FA61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2828B1E1-FB03-46D2-BA97-F84276F4FA61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2828B1E1-FB03-46D2-BA97-F84276F4FA61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
