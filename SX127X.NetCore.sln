@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "03.RegisterReadAndWrite", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "04.TransmitBasic", "TransmitBasic\04.TransmitBasic.csproj", "{2828B1E1-FB03-46D2-BA97-F84276F4FA61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiveBasic", "ReceiveBasic\ReceiveBasic.csproj", "{6F88A137-DCAE-431F-9DC5-58B1A9969773}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "05.ReceiveBasic", "ReceiveBasic\05.ReceiveBasic.csproj", "{6F88A137-DCAE-431F-9DC5-58B1A9969773}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiveInterrupt", "ReceiveInterrupt\ReceiveInterrupt.csproj", "{0B07726C-4F21-4E28-8135-E9DA19F2A9C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F88A137-DCAE-431F-9DC5-58B1A9969773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B07726C-4F21-4E28-8135-E9DA19F2A9C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B07726C-4F21-4E28-8135-E9DA19F2A9C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B07726C-4F21-4E28-8135-E9DA19F2A9C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B07726C-4F21-4E28-8135-E9DA19F2A9C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
