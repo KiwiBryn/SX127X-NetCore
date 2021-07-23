@@ -21,7 +21,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-namespace devMobile.IoT.SX127x.RegisterReadAndWrite
+namespace devMobile.IoT.SX127x.TransmitBasic
 {
 	public sealed class SX127XDevice
 	{
