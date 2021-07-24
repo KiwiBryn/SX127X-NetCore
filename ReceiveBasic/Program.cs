@@ -288,25 +288,21 @@ namespace devMobile.IoT.SX127x.ReceiveBasic
 					Debug.Write(".");
 				}
 				Console.WriteLine("");
-				Console.WriteLine(string.Format("RegIrqFlags {0}", Convert.ToString((byte)IrqFlags, 2).PadLeft(8, '0')));
+				Console.WriteLine($"RegIrqFlags {Convert.ToString((byte)IrqFlags, 2).PadLeft(8, '0')}");
 				Console.WriteLine("Receive-Message");
 				byte currentFifoAddress = sX127XDevice.ReadByte(0x10); // RegFifiRxCurrent
 				sX127XDevice.WriteByte(0x0d, currentFifoAddress); // RegFifoAddrPtr
 
 				byte numberOfBytes = sX127XDevice.ReadByte(0x13); // RegRxNbBytes
 
-				// Allocate buffer for message
-				byte[] messageBytes = new byte[numberOfBytes];
+				// Read the message from the FIFO
+				byte[] messageBytes = sX127XDevice.ReadBytes(0x00, numberOfBytes);
 
-				for (int i = 0; i < numberOfBytes; i++)
-				{
-					messageBytes[i] = sX127XDevice.ReadByte(0x00); // RegFifo
-				}
 				sX127XDevice.WriteByte(0x0d, 0);
 				sX127XDevice.WriteByte(0x12, 0b11111111); // RegIrqFlags clear all the bits
 
 				string messageText = UTF8Encoding.UTF8.GetString(messageBytes);
-				Console.WriteLine("Received {0} byte message {1}", messageBytes.Length, messageText);
+				Console.WriteLine($"Received {messageBytes.Length} byte message {messageText}");
 
 				Console.WriteLine("Receive-Done");
 			}
