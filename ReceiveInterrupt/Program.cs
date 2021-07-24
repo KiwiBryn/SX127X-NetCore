@@ -265,7 +265,7 @@ namespace devMobile.IoT.SX127x.ReceiveInterrupt
 			}
 
 			byte IrqFlags = ReadByte(0x12); // RegIrqFlags
-			Debug.WriteLine(string.Format("RegIrqFlags {0}", Convert.ToString(IrqFlags, 2).PadLeft(8, '0')));
+			Debug.WriteLine($"RegIrqFlags {Convert.ToString(IrqFlags, 2).PadLeft(8, '0')}");
 			if ((IrqFlags & 0b01000000) == 0b01000000)  // RxDone 
 			{
 				Debug.WriteLine("Receive-Message");
@@ -278,7 +278,7 @@ namespace devMobile.IoT.SX127x.ReceiveInterrupt
 				byte[] messageBytes = this.ReadBytes(0x00, numberOfBytes);
 
 				string messageText = UTF8Encoding.UTF8.GetString(messageBytes);
-				Debug.WriteLine("Received {0} byte message {1}", messageBytes.Length, messageText);
+				Debug.WriteLine($"Received {messageBytes.Length} byte message {messageText}");
 			}
 
 			this.WriteByte(0x12, 0xff);// RegIrqFlags
