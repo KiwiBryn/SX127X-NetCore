@@ -257,9 +257,6 @@ namespace devMobile.IoT.SX127x.TransmitBasic
 	{
 		static void Main(string[] args)
 		{
-			Byte regOpMode;
-			ushort preamble;
-			byte[] frequencyBytes;
 			// Uptronics has no reset pin uses CS0 or CS1
 			//SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine: 0); 
 			//SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine: 1); 
@@ -272,8 +269,8 @@ namespace devMobile.IoT.SX127x.TransmitBasic
 			sX127XDevice.WriteByte(0x01, 0b10000000); // RegOpMode 
 
 			// Set the frequency to 915MHz
-			byte[] frequencyWriteBytes = { 0xE4, 0xC0, 0x00 }; // RegFrMsb, RegFrMid, RegFrLsb
-			sX127XDevice.WriteBytes(0x06, frequencyWriteBytes);
+			byte[] frequencyBytes = { 0xE4, 0xC0, 0x00 }; // RegFrMsb, RegFrMid, RegFrLsb
+			sX127XDevice.WriteBytes(0x06, frequencyBytes);
 
 			// More power PA Boost
 			sX127XDevice.WriteByte(0x09, 0b10000000); // RegPaConfig
@@ -289,10 +286,7 @@ namespace devMobile.IoT.SX127x.TransmitBasic
 
 				// load the message into the fifo
 				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
-				foreach (byte b in messageBytes)
-				{
-					sX127XDevice.WriteByte(0x0, b); // RegFifo
-				}
+				sX127XDevice.WriteBytes(0x00, messageBytes); // RegFifo
 
 				// Set the length of the message in the fifo
 				sX127XDevice.WriteByte(0x22, (byte)messageBytes.Length); // RegPayloadLength
