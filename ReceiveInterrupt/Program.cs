@@ -274,13 +274,8 @@ namespace devMobile.IoT.SX127x.ReceiveInterrupt
 
 				byte numberOfBytes = this.ReadByte(0x13); // RegRxNbBytes
 
-				// Allocate buffer for message
-				byte[] messageBytes = new byte[numberOfBytes];
-
-				for (int i = 0; i < numberOfBytes; i++)
-				{
-					messageBytes[i] = this.ReadByte(0x00); // RegFifo
-				}
+				// Read the message from the FIFO
+				byte[] messageBytes = this.ReadBytes(0x00, numberOfBytes);
 
 				string messageText = UTF8Encoding.UTF8.GetString(messageBytes);
 				Debug.WriteLine("Received {0} byte message {1}", messageBytes.Length, messageText);
@@ -306,8 +301,8 @@ namespace devMobile.IoT.SX127x.ReceiveInterrupt
 			sX127XDevice.WriteByte(0x01, 0b10000000); // RegOpMode 
 
 			// Set the frequency to 915MHz
-			byte[] frequencyWriteBytes = { 0xE4, 0xC0, 0x00 }; // RegFrMsb, RegFrMid, RegFrLsb
-			sX127XDevice.WriteBytes(0x06, frequencyWriteBytes);
+			byte[] frequencyBytes = { 0xE4, 0xC0, 0x00 }; // RegFrMsb, RegFrMid, RegFrLsb
+			sX127XDevice.WriteBytes(0x06, frequencyBytes);
 
 			sX127XDevice.WriteByte(0x0F, 0x0); // RegFifoRxBaseAddress 
 
