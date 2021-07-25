@@ -302,7 +302,7 @@ namespace devMobile.IoT.SX127x.ReceiveTransmitInterrupt
 			//SX127XDevice sX127XDevice = new SX127XDevice(25, chipSelectLine: 1); 
 
 			// M2M device has reset pin uses non standard chip select 
-			//SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine: 0, chipSelectLogicalPinNumber: 25, resetPin: 17);
+			//SX127XDevice sX127XDevice = new SX127XDevice(4, chipSelectLine: 0, chipSelectLogicalPinNumber: 25, resetPin: 17);
 			SX127XDevice sX127XDevice = new SX127XDevice(4, chipSelectLine: 1, chipSelectLogicalPinNumber: 25, resetPinNumber: 17);
 
 			// Put device into LoRa + Sleep mode
