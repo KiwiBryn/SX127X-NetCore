@@ -115,8 +115,8 @@ namespace devMobile.IoT.SX127x.EnumsAndMasks
 		};
 
 		// Frequency configuration magic numbers from Semtech SX127X specs
-		private const double RH_RF95_FXOSC = 32000000.0;
-		private const double RH_RF95_FSTEP = RH_RF95_FXOSC / 524288.0;
+		private const double SX127X_FXOSC = 32000000.0;
+		private const double SX127X_FSTEP = SX127X_FXOSC / 524288.0;
 
 		// RegFrMsb, RegFrMid, RegFrLsb
 		private const double FrequencyDefault = 434000000.0;
@@ -605,7 +605,7 @@ namespace devMobile.IoT.SX127x.EnumsAndMasks
 			// Configure RF Carrier frequency 
 			if (frequency != FrequencyDefault)
 			{
-				byte[] bytes = BitConverter.GetBytes((long)(frequency / RH_RF95_FSTEP));
+				byte[] bytes = BitConverter.GetBytes((long)(frequency / SX127X_FSTEP));
 				this.WriteByte((byte)Registers.RegFrMsb, bytes[2]);
 				this.WriteByte((byte)Registers.RegFrMid, bytes[1]);
 				this.WriteByte((byte)Registers.RegFrLsb, bytes[0]);
@@ -829,11 +829,11 @@ namespace devMobile.IoT.SX127x.EnumsAndMasks
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 22, resetLogicalPinNumber: 25);
 #endif
 
-#if DRAGINO_CS0
+#if DRAGINO_CS0 // Y
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
-#if DRAGINO_CS1
+#if DRAGINO_CS1 // Y
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
