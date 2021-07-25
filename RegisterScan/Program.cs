@@ -78,9 +78,33 @@ namespace devMobile.IoT.SX127x.RegisterScan
 	{
 		static void Main(string[] args)
 		{
-			//const int ChipSelectLogicalPinNumber = 25;
-			//SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:0, chipSelectLogicalPinNumber= ChipSelectLogicalPinNumber);
+#if ADAFRUIT_RADIO_BONNET
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:1);
+#endif
+
+#if DRAGINO_CS0 // Y
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:0, chipSelectLogicalPinNumber:25);
+#endif
+
+#if DRAGINO_CS1 // Y
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:0, chipSelectLogicalPinNumber:25);
+#endif
+
+#if ELECROW // Y
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:1);
+#endif
+
+#if ELECTRONIC_TRICKS // Y
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine:0);
+#endif
+
+#if UPUTRONICS_RPIZERO_CS0 
 			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine: 0);
+#endif
+
+#if UPUTRONICS_RPIZERO_CS1 
+			SX127XDevice sX127XDevice = new SX127XDevice(chipSelectLine: 1);
+#endif
 
 			while (true)
 			{
