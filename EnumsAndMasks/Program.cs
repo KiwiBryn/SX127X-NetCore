@@ -740,7 +740,7 @@ namespace devMobile.IoT.SX127x.EnumsAndMasks
 			// RegInvertIQ
 			if (invertIQ != false)
 			{
-				this.WriteByte((byte)Registers.RegDetectionThreshold, (byte)detectionThreshold);
+				this.WriteByte((byte)Registers.RegInvertIQ, (byte)detectionThreshold);
 			}
 
 			// RegSyncWordDefault 
