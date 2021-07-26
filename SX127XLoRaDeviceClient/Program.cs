@@ -92,7 +92,7 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 				messageCount += 1;
 
 				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
-				Debug.WriteLine("Sending {0} bytes message {1}", messageBytes.Length, messageText);
+				Console.WriteLine("Sending {0} bytes message {1}", messageBytes.Length, messageText);
 				sX127XDevice.Send(messageBytes);
 
 				Thread.Sleep(50000);
@@ -105,17 +105,17 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			{
 				string messageText = UTF8Encoding.UTF8.GetString(e.Data);
 
-				Debug.WriteLine(@"{0:HH:mm:ss}-RX PacketSnr {1:0.0} Packet RSSI {2}dBm RSSI {3}dBm = {4} byte message ""{5}""", DateTime.Now, e.PacketSnr, e.PacketRssi, e.Rssi, e.Data.Length, messageText);
+				Console.WriteLine(@"{0:HH:mm:ss}-RX PacketSnr {1:0.0} Packet RSSI {2}dBm RSSI {3}dBm = {4} byte message ""{5}""", DateTime.Now, e.PacketSnr, e.PacketRssi, e.Rssi, e.Data.Length, messageText);
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine(ex.Message);
+				Console.WriteLine(ex.Message);
 			}
 		}
 
 		private static void SX127XDevice_OnTransmit(object sender, SX127XDevice.OnDataTransmitedEventArgs e)
 		{
-			Debug.WriteLine("{0:HH:mm:ss}-TX Done", DateTime.Now);
+			Console.WriteLine("{0:HH:mm:ss}-TX Done", DateTime.Now);
 		}
 	}
 }
