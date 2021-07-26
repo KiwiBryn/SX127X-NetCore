@@ -18,7 +18,6 @@ using System;
 using System.Device.Gpio;
 using System.Device.Spi;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 
 namespace devMobile.IoT.SX127xLoRaDevice
@@ -41,13 +40,12 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		public delegate void onReceivedEventHandler(Object sender, OnDataReceivedEventArgs e);
 		public event onReceivedEventHandler OnReceive;
 
-		public delegate void OnDataTransmittedHandler(byte[] data);
 		public class OnDataTransmitedEventArgs : EventArgs
 		{
 			public byte[] Data { get; set; }
 		}
-		public delegate void onTransmittededEventHandler(Object sender, OnDataTransmitedEventArgs e);
-		public event onTransmittededEventHandler OnTransmit;
+		public delegate void onTransmittedEventHandler(Object sender, OnDataTransmitedEventArgs e);
+		public event onTransmittedEventHandler OnTransmit;
 
 
 		// Registers from SemTech SX127X Datasheet
@@ -62,7 +60,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			RegFrMid = 0x7,
 			RegFrLsb = 0x08,
 			RegPAConfig = 0x09,
-			//RegPARamp = 0x0A, // not inlcuded as FSK/OOK functionality
+			//RegPARamp = 0x0A, // not included as FSK/OOK functionality
 			RegOcp = 0x0B,
 			RegLna = 0x0C,
 			RegFifoAddrPtr = 0x0D,
@@ -664,7 +662,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			if (frequency != FrequencyDefault)
 			{
 				byte[] bytes = BitConverter.GetBytes((long)(frequency / SX127X_FSTEP));
-				// TODO replace with write bytes
 				this.WriteByte((byte)Registers.RegFrMsb, bytes[2]);
 				this.WriteByte((byte)Registers.RegFrMid, bytes[1]);
 				this.WriteByte((byte)Registers.RegFrLsb, bytes[0]);
@@ -749,9 +746,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			// RegPreambleMsb + RegPreambleLsb
 			if (preambleLength != PreambleLengthDefault)
 			{
-				byte[] premableBytes = BitConverter.GetBytes(preambleLength);
-				this.WriteByte((byte)Registers.RegPreambleMsb, premableBytes[1]);
-				this.WriteByte((byte)Registers.RegPreambleLsb, premableBytes[0]);
+				this.WriteWordMsbLsb((Byte)Registers.RegPreambleMsb, preambleLength);
 			}
 
 			// RegPayloadLength
