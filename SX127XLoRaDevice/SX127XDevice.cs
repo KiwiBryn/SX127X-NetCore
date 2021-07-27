@@ -102,6 +102,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			RegDetectionThreshold = 0x37,
 			// Reserved 0x38
 			RegSyncWord = 0x39,
+			RegInvertIQ2 = 0x3B,
 			RegDioMapping1 = 0x40,
 			RegVersion = 0x42,
 
@@ -326,9 +327,16 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private const RegDetectOptimizeDectionOptimize RegDetectOptimizeDectionOptimizeDefault = RegDetectOptimizeDectionOptimize._SF7toSF12;
 
 		// RegInvertId
-		private const byte InvertIqOn = 0b01000000;
-		private const byte InvertIqOff = 0b00000000;
-		private const bool InvertIqDefault = false;
+		private const byte InvertIqRXOn =  0b01100110;
+		private const byte InvertIqRXOff = 0b00100110;
+		public const bool InvertIqRXDefault = false;
+
+		private const byte InvertIqTXOn =  0b00100111; 
+		private const byte InvertIqTXOff = 0b00100110;
+		public const bool InvertIqTXDefault = true;
+
+		private const byte RegInvertIq2On = 0x19;
+		private const byte RegInvertIq2Off = 0x1D;
 
 		// RegDetectionThreshold
 		public enum RegisterDetectionThreshold
@@ -365,6 +373,8 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private double Frequency = FrequencyDefault;
 		private bool RxDoneIgnoreIfCrcMissing = true;
 		private bool RxDoneIgnoreIfCrcInvalid = true;
+		private bool InvertIQRX = InvertIqRXDefault;
+		private bool InvertIQTX = InvertIqRXDefault;
 
 		public enum ChipSelectLine
 		{
@@ -620,6 +630,68 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			this.WriteByte((byte)Registers.RegOpMode, regOpModeValue);
 		}
 
+		public void InvertIqRx(bool enable)
+		{
+			byte value;
+
+			if (enable)
+			{
+				value = InvertIqRXOn;
+			}
+			else
+			{
+				value = InvertIqRXOff;
+			}
+
+			if (this.InvertIQTX)
+			{
+				value |= InvertIqTXOn;
+			}
+			this.WriteByte((byte)Registers.RegInvertIQ, value);
+
+			if (enable || InvertIQTX)
+			{
+				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2On);
+			}
+			else
+			{
+				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2Off);
+			}
+
+			this.InvertIQRX = enable;
+		}
+
+		public void InvertIqTx(bool enable)
+		{
+			byte value;
+
+			if (enable)
+			{
+				value = InvertIqTXOn;
+			}
+			else
+			{
+				value = InvertIqTXOff;
+			}
+
+			if (this.InvertIQRX)
+			{
+				value |= InvertIqRXOn;
+			}
+			this.WriteByte((byte)Registers.RegInvertIQ, value);
+
+			if (enable || InvertIQRX)
+			{
+				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2On);
+			}
+			else
+			{
+				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2Off);
+			}
+
+			InvertIQTX = enable;
+		}
+
 		public void Initialise(RegOpModeMode modeAfterInitialise, // RegOpMode
 			double frequency = FrequencyDefault, // RegFrMsb, RegFrMid, RegFrLsb
 			bool rxDoneignoreIfCrcMissing = true, bool rxDoneignoreIfCrcInvalid = true,
@@ -636,7 +708,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			bool lowDataRateOptimize = LowDataRateOptimizeDefault, bool agcAutoOn = AgcAutoOnDefault,
 			byte ppmCorrection = ppmCorrectionDefault,
 			RegDetectOptimizeDectionOptimize detectionOptimize = RegDetectOptimizeDectionOptimizeDefault,
-			bool invertIQ = InvertIqDefault,
+			bool invertIQRX = InvertIqRXDefault, bool invertIQTX = InvertIqTXDefault,
 			RegisterDetectionThreshold detectionThreshold = RegisterDetectionThresholdDefault,
 			byte syncWord = RegSyncWordDefault)
 		{
@@ -645,6 +717,8 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			Frequency = frequency; // Store this away for RSSI adjustments
 			RxDoneIgnoreIfCrcMissing = rxDoneignoreIfCrcMissing;
 			RxDoneIgnoreIfCrcInvalid = rxDoneignoreIfCrcInvalid;
+			InvertIQRX = invertIQRX;
+			InvertIQTX = invertIQTX;
 
 			// Strobe Reset pin briefly to factory reset SX127X chip
 			if (ResetLogicalPinNumber != 0)
@@ -794,11 +868,8 @@ namespace devMobile.IoT.SX127xLoRaDevice
 				this.WriteByte((byte)Registers.RegDetectOptimize, (byte)detectionOptimize);
 			}
 
-			// RegInvertIQ
-			if (invertIQ != false)
-			{
-				this.WriteByte((byte)Registers.RegInvertIQ, (byte)detectionThreshold);
-			}
+			this.InvertIqRx(InvertIQRX);
+			this.InvertIqTx(InvertIQTX);
 
 			// RegSyncWordDefault 
 			if (syncWord != RegSyncWordDefault)
