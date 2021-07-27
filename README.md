@@ -1,5 +1,5 @@
 # SX127X.NetCore
-A C# library for LoRa[LoRaAlliance](https://lora-alliance.org/) connectivity for Semtech [SX127X](https://www.semtech.com/products/wireless-rf/lora-transceivers/SX1276)/HopeRF [RFMRFM9X](http://www.hoperf.com/rf_transceiver/lora/RFM95W.html) equipped shields on  Windows 10 IoT Core Raspbery PI devices.
+A C# library for LoRa[LoRaAlliance](https://lora-alliance.org/) connectivity for Semtech [SX127X](https://www.semtech.com/products/wireless-rf/lora-transceivers/SX1276) equipped shields on [.Net Core 5](https://dotnet.microsoft.com/) powered devices. The initial versions of the code will developed on a [Raspberry PI](https://www.raspberrypi.org/) but I will also look at other supported Single Board Computers(SBCs).
 
 The repo has the source code for the series of blog posts written as I built this library
 
@@ -10,14 +10,20 @@ The repo has the source code for the series of blog posts written as I built thi
 04. [Receive Basic](http://blog.devmobile.co.nz/2021/07/25/net-core-5-sx127x-library-part4/)
 05. [Receive and Transmit with Interrupts](http://blog.devmobile.co.nz/2021/07/26/net-core-5-sx127x-library-part5/)
 
-SX127XLoRaDevice - the library source code
-SX127XLoRaDeviceClient - Sample application which illustrates how to call the library and has  conditional compile options for the supported pHats
+The library is built using the [dotnet/iot](https://github.com/dotnet/iot) library which enables access to [General Purpose Input/Output(GPIO)](https://en.wikipedia.org/wiki/General-purpose_input/output), [Serial Peripheral Interface(SPI)](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface), [Inter-Integrated Circuit(I2C)](https://en.wikipedia.org/wiki/I%C2%B2C) and [Universal asynchronous receiver-transmitter(UART)](https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter) pins.
+
+[SX127XLoRaDevice](https://github.com/KiwiBryn/SX127X.NetCore/tree/master/SX127XLoRaDevice) - the library source code
+
+[SX127XLoRaDeviceClient](https://github.com/KiwiBryn/SX127X.NetCore/tree/master/SX127XLoRaDeviceClient)- Illustrates how to use the library and the conditional compile options for supported pHats
 
 There are also a parallel development projects which are documented seperately 
 
 [nanoFramework](http://blog.devmobile.co.nz/2020/04/10/nanoframework-lora-library-part1/)
+
 [TinyCLROSV2](http://blog.devmobile.co.nz/2020/07/08/tinyclr-os-v2-rc1-lora-library-part1/)
+
 [Wilderness Labs Meadow](http://blog.devmobile.co.nz/2019/12/25/net-meadow-lora-library-part1/)
+
 [Windows 10 IoT Core](http://blog.devmobile.co.nz/2018/07/30/windows-10-iot-core-lora-library/)
 
 My main use case for the Library is a telemetery protocol translation field gateway(working on identity translation) uploading data from a number of remote devices.
