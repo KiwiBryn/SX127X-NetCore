@@ -15,7 +15,6 @@
 //
 //---------------------------------------------------------------------------------
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
@@ -46,9 +45,6 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 25, resetLogicalPinNumber: 22);
 #endif
 
-#if ELECTRONIC_TRICKS
-			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 25, resetLogicalPinNumber: 22);
-#endif
 
 #if M2M_CS0
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
@@ -80,6 +76,9 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			sX127XDevice.RegisterDump();
 #endif
 
+			sX127XDevice.InvertIqTx(false); // enableInvertIQ 
+			sX127XDevice.InvertIqRx(true); // enableInvertIQ
+
 			sX127XDevice.OnReceive += SX127XDevice_OnReceive;
 			sX127XDevice.Receive();
 			sX127XDevice.OnTransmit += SX127XDevice_OnTransmit;
@@ -93,9 +92,10 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 
 				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
 				Console.WriteLine("Sending {0} bytes message {1}", messageBytes.Length, messageText);
+
 				sX127XDevice.Send(messageBytes);
 
-				Thread.Sleep(50000);
+				Thread.Sleep(10000);
 			}
 		}
 
