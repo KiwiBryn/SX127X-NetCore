@@ -69,8 +69,8 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			RegIrqFlagsMask = 0x11,
 			RegIrqFlags = 0x12,
 			RegRxNbBytes = 0x13,
-			// RegRxHeaderCnValueMsb=0x14
-			// RegRxHeaderCnValueLsb=0x15
+			// RegRxHeaderCntValueMsb=0x14
+			// RegRxHeaderCntValueLsb=0x15
 			// RegRxPacketCntValueMsb=0x16
 			// RegRxPacketCntValueMsb=0x17
 			// RegModemStat=0x18
@@ -321,10 +321,10 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		// RegDetectOptimize
 		public enum RegDetectOptimizeDectionOptimize
 		{
-			_SF7toSF12 = 0x03,
-			_SF6 = 0x05,
+			SF7toSF12 = 0x03,
+			SF6 = 0x05,
 		};
-		private const RegDetectOptimizeDectionOptimize RegDetectOptimizeDectionOptimizeDefault = RegDetectOptimizeDectionOptimize._SF7toSF12;
+		private const RegDetectOptimizeDectionOptimize RegDetectOptimizeDectionOptimizeDefault = RegDetectOptimizeDectionOptimize.SF7toSF12;
 
 		// RegInvertId
 		private const byte InvertIqRXOn =  0b01100110;
@@ -341,10 +341,10 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		// RegDetectionThreshold
 		public enum RegisterDetectionThreshold
 		{
-			_SF7toSF12 = 0x0A,
-			_SF6 = 0x0c,
+			SF7toSF12 = 0x0A,
+			SF6 = 0x0c,
 		}
-		private const RegisterDetectionThreshold RegisterDetectionThresholdDefault = RegisterDetectionThreshold._SF7toSF12;
+		private const RegisterDetectionThreshold RegisterDetectionThresholdDefault = RegisterDetectionThreshold.SF7toSF12;
 
 		// RegSyncWord Syncword default for public networks
 		public const byte RegSyncWordDefault = 0x12;
