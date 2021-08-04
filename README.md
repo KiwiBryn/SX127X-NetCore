@@ -9,6 +9,9 @@ The repo has the source code for the series of blog posts written as I built thi
 03. [Transmit Basic](http://blog.devmobile.co.nz/2021/07/23/net-core-5-sx127x-library-part3/)
 04. [Receive Basic](http://blog.devmobile.co.nz/2021/07/25/net-core-5-sx127x-library-part4/)
 05. [Receive and Transmit with Interrupts](http://blog.devmobile.co.nz/2021/07/26/net-core-5-sx127x-library-part5/)
+06. [Enumerations, Constants and Masks](http://blog.devmobile.co.nz/2021/07/29/net-core-5-sx127x-library-part6/)
+07. [Arduino-LoRa LoRaSetSyncWord example](http://blog.devmobile.co.nz/2021/08/03/net-core-5-sx127x-library-arduino-lorasetsyncword/)
+08. [Arduino-LoRa LoRaSetSpread example](http://blog.devmobile.co.nz/2021/08/05/net-core-5-sx127x-library-arduino-lorasetspread/)
 
 The library is built using the [dotnet/iot](https://github.com/dotnet/iot) library which enables access to [General Purpose Input/Output(GPIO)](https://en.wikipedia.org/wiki/General-purpose_input/output), [Serial Peripheral Interface(SPI)](https://en.wikipedia.org/wiki/Serial_Peripheral_Interface), [Inter-Integrated Circuit(I2C)](https://en.wikipedia.org/wiki/I%C2%B2C) and [Universal asynchronous receiver-transmitter(UART)](https://en.wikipedia.org/wiki/Universal_asynchronous_receiver-transmitter) pins.
 
