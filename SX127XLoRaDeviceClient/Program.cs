@@ -70,16 +70,33 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, 16);
 #endif
 
-			sX127XDevice.Initialise(SX127XDevice.RegOpModeMode.ReceiveContinuous, Frequency, paBoost: true, rxPayloadCrcOn:true, rxDoneignoreIfCrcMissing:false);
+			sX127XDevice.Initialise(
+					SX127XDevice.RegOpModeMode.ReceiveContinuous,
+					Frequency,
+					paBoost: true,
+#if LORA_SET_SYNCWORD
+					syncWord:0x53,
+#endif
+#if LORA_SET_SPREAD
+					spreadingFactor: SX127XDevice.RegModemConfig2SpreadingFactor._256ChipsPerSymbol,
+#endif
+#if LORA_SIMPLE_NODE
+					invertIQTX: false,
+#endif
+#if LORA_SIMPLE_GATEWAY
+					invertIQTX:true,
+#endif
+#if LORA_DUPLEX
+					invertIQTX: true,
+#endif
+					rxPayloadCrcOn: true,
+					rxDoneignoreIfCrcMissing: false);
 
 #if DEBUG
 			sX127XDevice.RegisterDump();
 #endif
 
-			sX127XDevice.InvertIqTx(false); // enableInvertIQ 
-			sX127XDevice.InvertIqRx(true); // enableInvertIQ
-
-			sX127XDevice.OnReceive += SX127XDevice_OnReceive;
+ 			sX127XDevice.OnReceive += SX127XDevice_OnReceive;
 			sX127XDevice.Receive();
 			sX127XDevice.OnTransmit += SX127XDevice_OnTransmit;
 
@@ -90,9 +107,21 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 				string messageText = "Hello LoRa from .NET Core! " + messageCount.ToString();
 				messageCount += 1;
 
-				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
-				Console.WriteLine("Sending {0} bytes message {1}", messageBytes.Length, messageText);
+#if LORA_DUPLEX
+				byte[] messageBytes = new byte[messageText.Length+4];
 
+				messageBytes[0] = 0xaa;
+				messageBytes[1] = 0x00;
+				messageBytes[2] = (byte)messageCount;
+				messageBytes[3] = (byte)messageText.Length;
+
+				Array.Copy(UTF8Encoding.UTF8.GetBytes(messageText), 0, messageBytes, 4, messageBytes[3]);
+
+#else
+				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
+#endif
+
+				Console.WriteLine("Sending {0} bytes message {1}", messageBytes.Length, messageText); 
 				sX127XDevice.Send(messageBytes);
 
 				Thread.Sleep(10000);
@@ -101,16 +130,39 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 
 		private static void SX127XDevice_OnReceive(object sender, SX127XDevice.OnDataReceivedEventArgs e)
 		{
+			string messageText;
+
+#if LORA_DUPLEX
+			if ((e.Data[0] != 0x00) && (e.Data[0] != 0xFF))
+			{
+				Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss} Address:{e.Data[0]}");
+
+				return;
+			}
+
 			try
 			{
-				string messageText = UTF8Encoding.UTF8.GetString(e.Data);
+				messageText = UTF8Encoding.UTF8.GetString(e.Data, 4, e.Data[3]);
 
-				Console.WriteLine(@"{0:HH:mm:ss}-RX PacketSnr {1:0.0} Packet RSSI {2}dBm RSSI {3}dBm = {4} byte message ""{5}""", DateTime.Now, e.PacketSnr, e.PacketRssi, e.Rssi, e.Data.Length, messageText);
+				Console.WriteLine(@"{0:HH:mm:ss}-RX PacketSnr {1:0.0} Packet RSSI {2}dBm RSSI {3}dBm To 0x{4:x} From 0x{5:x} Count {6} Length {7} byte message ""{8}""", DateTime.Now, e.PacketSnr, e.PacketRssi, e.Rssi, e.Data[0], e.Data[1], e.Data[2], e.Data[3], messageText);
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
 			}
+#else
+			try
+			{
+				messageText = UTF8Encoding.UTF8.GetString(e.Data);
+
+				Console.WriteLine(@"{0:HH:mm:ss}-RX PacketSnr {1:0.0} Packet RSSI {2}dBm RSSI {3}dBm {4} byte message ""{5}""", DateTime.Now, e.PacketSnr, e.PacketRssi, e.Rssi, e.Data.Length, messageText);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+			}
+#endif
+
 		}
 
 		private static void SX127XDevice_OnTransmit(object sender, SX127XDevice.OnDataTransmitedEventArgs e)
