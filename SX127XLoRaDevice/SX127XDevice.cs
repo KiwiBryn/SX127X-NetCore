@@ -290,6 +290,8 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		// RegModemConfig2 for MSb RegSymbTimeoutLsb for LSB
 		private const byte SymbolTimeoutDefault = 0x64;
 
+		private const byte SymbolTimeoutMsbMask = 0b0011;
+
 		// RegReambleMsb & RegReambleLsb
 		private const ushort PreambleLengthDefault = 0x08;
 
@@ -805,6 +807,9 @@ namespace devMobile.IoT.SX127xLoRaDevice
 				}
 				// Get the MSB of SymbolTimeout
 				byte[] symbolTimeoutBytes = BitConverter.GetBytes(symbolTimeout);
+
+				// Only the zeroth & second bit of byte matter
+				symbolTimeoutBytes[1] &= SymbolTimeoutMsbMask;
 				RegModemConfig2Value |= symbolTimeoutBytes[1];
 				this.WriteByte((byte)Registers.RegModemConfig2, RegModemConfig2Value);
 			}
