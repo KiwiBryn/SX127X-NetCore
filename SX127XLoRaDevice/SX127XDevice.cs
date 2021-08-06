@@ -370,8 +370,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private readonly GpioController gpioController = null;
 		private readonly SpiDevice SX127XTransceiver = null;
 		private readonly Object Rfm9XRegFifoLock = new object();
-		private RegOpModeMode RegOpModeModeDefault = RegOpModeMode.Sleep;
-		private RegOpModeMode RegOpModeModeCurrent = RegOpModeMode.Sleep;
 		private double Frequency = FrequencyDefault;
 		private bool RxDoneIgnoreIfCrcMissing = true;
 		private bool RxDoneIgnoreIfCrcInvalid = true;
@@ -650,7 +648,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			RegisterDetectionThreshold detectionThreshold = RegisterDetectionThresholdDefault,
 			byte syncWord = RegSyncWordDefault)
 		{
-			RegOpModeModeCurrent = modeAfterInitialise; // TODO 
 
 			Frequency = frequency; // Store this away for RSSI adjustments
 			RxDoneIgnoreIfCrcMissing = rxDoneignoreIfCrcMissing;
@@ -849,7 +846,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private void ProcessTxDone(byte IrqFlags)
 		{
 			Debug.Assert(IrqFlags != 0);
-			SetMode(RegOpModeModeDefault); // TODO BHL
 
 			OnDataTransmitedEventArgs transmitArgs = new OnDataTransmitedEventArgs();
 
@@ -954,7 +950,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 
 		public void Receive()
 		{
-			RegOpModeModeDefault = RegOpModeMode.ReceiveContinuous;
 			SetMode(RegOpModeMode.ReceiveContinuous);
 		}
 
