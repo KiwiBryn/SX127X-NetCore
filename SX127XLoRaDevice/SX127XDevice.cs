@@ -335,7 +335,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 
 		private const byte InvertIqTXOn =  0b00110111; 
 		private const byte InvertIqTXOff = 0b00110110;
-		public const bool InvertIqTXDefault = false;
+		public const bool InvertIqTXDefault = true;
 
 		private const byte RegInvertIq2On = 0x19;
 		private const byte RegInvertIq2Off = 0x1D;
@@ -375,8 +375,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private double Frequency = FrequencyDefault;
 		private bool RxDoneIgnoreIfCrcMissing = true;
 		private bool RxDoneIgnoreIfCrcInvalid = true;
-		private bool InvertIQRX = InvertIqRXDefault;
-		private bool InvertIQTX = InvertIqRXDefault;
 
 		public enum ChipSelectLine
 		{
@@ -632,68 +630,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			this.WriteByte((byte)Registers.RegOpMode, regOpModeValue);
 		}
 
-		public void InvertIqRx(bool enable)
-		{
-			byte value;
-
-			if (enable)
-			{
-				value = InvertIqRXOn;
-			}
-			else
-			{
-				value = InvertIqRXOff;
-			}
-
-			if (this.InvertIQTX)
-			{
-				value |= InvertIqTXOn;
-			}
-			this.WriteByte((byte)Registers.RegInvertIQ, value);
-
-			if (enable || InvertIQTX)
-			{
-				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2On);
-			}
-			else
-			{
-				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2Off);
-			}
-
-			this.InvertIQRX = enable;
-		}
-
-		public void InvertIqTx(bool enable)
-		{
-			byte value;
-
-			if (enable)
-			{
-				value = InvertIqTXOn;
-			}
-			else
-			{
-				value = InvertIqTXOff;
-			}
-
-			if (this.InvertIQRX)
-			{
-				value |= InvertIqRXOn;
-			}
-			this.WriteByte((byte)Registers.RegInvertIQ, value);
-
-			if (enable || InvertIQRX)
-			{
-				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2On);
-			}
-			else
-			{
-				this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2Off);
-			}
-
-			InvertIQTX = enable;
-		}
-
 		public void Initialise(RegOpModeMode modeAfterInitialise, // RegOpMode
 			double frequency = FrequencyDefault, // RegFrMsb, RegFrMid, RegFrLsb
 			bool rxDoneignoreIfCrcMissing = true, bool rxDoneignoreIfCrcInvalid = true,
@@ -719,8 +655,6 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			Frequency = frequency; // Store this away for RSSI adjustments
 			RxDoneIgnoreIfCrcMissing = rxDoneignoreIfCrcMissing;
 			RxDoneIgnoreIfCrcInvalid = rxDoneignoreIfCrcInvalid;
-			InvertIQRX = invertIQRX;
-			InvertIQTX = invertIQTX;
 
 			// Strobe Reset pin briefly to factory reset SX127X chip
 			if (ResetLogicalPinNumber != 0)
@@ -873,8 +807,31 @@ namespace devMobile.IoT.SX127xLoRaDevice
 				this.WriteByte((byte)Registers.RegDetectOptimize, (byte)detectionOptimize);
 			}
 
-			this.InvertIqRx(InvertIQRX);
-			this.InvertIqTx(InvertIQTX);
+			if ((invertIQRX != InvertIqRXDefault) || (invertIQTX != InvertIqTXDefault))
+			{
+				byte regInvertIQValue = 0;
+
+				if (invertIQRX)
+				{
+					regInvertIQValue |= InvertIqRXOn;
+				}
+
+				if (invertIQTX)
+				{
+					regInvertIQValue |= InvertIqTXOn;
+				}
+
+				this.WriteByte((byte)Registers.RegInvertIQ, regInvertIQValue);
+
+				if (invertIQRX || invertIQTX)
+				{
+					this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2On);
+				}
+				else
+				{
+					this.WriteByte((byte)Registers.RegInvertIQ2, RegInvertIq2Off);
+				}
+			}
 
 			// RegSyncWordDefault 
 			if (syncWord != RegSyncWordDefault)
