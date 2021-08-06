@@ -136,11 +136,13 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 
 				Array.Copy(UTF8Encoding.UTF8.GetBytes(messageText), 0, messageBytes, 4, messageBytes[3]);
 
+				Console.WriteLine("{0:HH:mm:ss}-TX To 0x{1:X} From 0x{2:X} Count {3} {4} bytes message {5}", DateTime.Now, messageBytes[0], messageBytes[1], messageBytes[2], messageBytes.Length, messageText); 
 #else
 				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
+
+				Console.WriteLine("{0:HH:mm:ss}-TX {1} bytes message {2}", DateTime.Now, messageBytes.Length, messageText);
 #endif
 
-				Console.WriteLine("{0:HH:mm:ss}-TX To 0x{1:X} From 0x{2:X} Count {3} {4} bytes message {5}", DateTime.Now, messageBytes[0], messageBytes[1], messageBytes[2], messageBytes.Length, messageText); 
 				sX127XDevice.Send(messageBytes);
 
 				Thread.Sleep(10000);
