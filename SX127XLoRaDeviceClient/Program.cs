@@ -25,44 +25,44 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 	class Program
 	{
 #if ADAFRUIT_RADIO_BONNET
-			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 22, resetLogicalPinNumber: 25);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 22, resetLogicalPinNumber: 25);
 #endif
 
-#if DRAGINO_CS0 // Y
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
+#if DRAGINO_CS0
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
-#if DRAGINO_CS1 // Y
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
+#if DRAGINO_CS1
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
 #if ELECROW
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 25, resetLogicalPinNumber: 22);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 25, resetLogicalPinNumber: 22);
 #endif
 
 
 #if M2M_CS0
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
 #if M2M_CS1
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, interuptLogicalPinNumber: 4, chipSelectLogicalPinNumber: 25, resetLogicalPinNumber: 17);
 #endif
 
 		// Uptronics RPI Zero has no reset pin has switch selectable CS0 or CS1
 #if UPUTRONICS_RPIZERO_CS0
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, 25);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, 25);
 #endif
 #if UPUTRONICS_RPIZERO_CS1
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, 16);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, 16);
 #endif
 
 		// Uptronics RPI Plus can have two devices one on CS0 the other on CS1
 #if UPUTRONICS_RPIPLUS_CS0 && !UPUTRONICS_RPIPLUS_CS1
-			private static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, 25);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS0, 25);
 #endif
 #if UPUTRONICS_RPIPLUS_CS1 && UPUTRONICS_RPIPLUS_CS0
-			SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, 16);
+		private readonly static SX127XDevice sX127XDevice = new SX127XDevice(SX127XDevice.ChipSelectLine.CS1, 16);
 #endif
 
 		static void Main(string[] args)
