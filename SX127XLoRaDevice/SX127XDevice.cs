@@ -288,7 +288,9 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private const byte RegModemConfig2RxPayloadCrcDefault = RegModemConfig2RxPayloadCrcOff;
 
 		// RegModemConfig2 for MSb RegSymbTimeoutLsb for LSB
-		private const byte SymbolTimeoutDefault = 0x64;
+		private const ushort SymbolTimeoutDefault = 0x64;
+		private const ushort symbolTimeoutMin = 0x0;
+		private const ushort symbolTimeoutMax = 0x1023;
 
 		private const byte SymbolTimeoutMsbMask = 0b0011;
 
@@ -362,7 +364,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 
 		// The Semtech ID Relating to the Silicon revision
 		private const byte RegVersionValueExpected = 0x12;
-
+			
 		// Hardware configuration support
 		private readonly int SpiBusId;
 		private readonly int ChipSelectLogicalPinNumber;
@@ -722,6 +724,11 @@ namespace devMobile.IoT.SX127xLoRaDevice
 				regModemConfig1Value |= (byte)codingRate;
 				regModemConfig1Value |= (byte)implicitHeaderModeOn;
 				this.WriteByte((byte)Registers.RegModemConfig1, regModemConfig1Value);
+			}
+
+			if ((symbolTimeout < symbolTimeoutMin) || (symbolTimeout > symbolTimeoutMax))
+			{
+				throw new ArgumentException($"symbolTimeout must be between {symbolTimeoutMin} and {symbolTimeoutMax}", nameof(symbolTimeout));
 			}
 
 			// Set regModemConfig2 if any of the settings not defaults
