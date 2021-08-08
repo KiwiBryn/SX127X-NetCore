@@ -387,7 +387,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private readonly int ResetLogicalPinNumber;
 		private readonly GpioController gpioController = null;
 		private readonly SpiDevice SX127XTransceiver = null;
-		private readonly Object Rfm9XRegFifoLock = new object();
+		private readonly Object SX127XRegFifoLock = new object();
 		private double Frequency = FrequencyDefault;
 		private bool RxDoneIgnoreIfCrcMissing = true;
 		private bool RxDoneIgnoreIfCrcInvalid = true;
@@ -940,7 +940,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			}
 
 			// Extract the message from the RFM9X fifo, try and keep lock in place for the minimum possible time
-			lock (Rfm9XRegFifoLock)
+			lock (SX127XRegFifoLock)
 			{
 				byte currentFifoAddress = this.ReadByte((byte)Registers.RegFifoRxCurrent);
 
@@ -1022,7 +1022,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			Debug.Assert(messageBytes.Length >= MessageLengthMinimum);
 			Debug.Assert(messageBytes.Length <= MessageLengthMaximum);
 
-			lock (Rfm9XRegFifoLock)
+			lock (SX127XRegFifoLock)
 			{
 				this.WriteByte((byte)Registers.RegFifoTxBaseAddr, 0x0);
 
