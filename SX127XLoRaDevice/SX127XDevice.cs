@@ -695,16 +695,16 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			// Validate the OutputPower
 			if (powerAmplifier == PowerAmplifier.Rfo)
 			{
-				if ((outputPower < -1) || (outputPower>14))
+				if ((outputPower < OutputPowerRfoMin) || (outputPower > OutputPowerRfoMax))
 				{
-					throw new ArgumentException($"outputPower must be between {-1} and {14}", nameof(outputPower));
+					throw new ArgumentException($"outputPower must be between {OutputPowerRfoMin} and {OutputPowerRfoMax}", nameof(outputPower));
 				}
 			}
 			if (powerAmplifier == PowerAmplifier.PABoost)
 			{
-				if ((outputPower < 5) || (outputPower > 23))
+				if ((outputPower < OutputPowerPABoostMin) || (outputPower > OutputPowerPABoostMax))
 				{
-					throw new ArgumentException($"outputPower must be between {5} and {23}", nameof(outputPower));	
+					throw new ArgumentException($"outputPower must be between {OutputPowerPABoostMin} and {OutputPowerPABoostMax}", nameof(outputPower));	
 				}
 			}
 
