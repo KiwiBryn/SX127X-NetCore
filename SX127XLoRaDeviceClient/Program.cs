@@ -72,7 +72,12 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			sX127XDevice.Initialise(
 					SX127XDevice.RegOpModeMode.ReceiveContinuous,
 					915000000.0,
-					paBoost: true,
+					powerAmplifier: SX127XDevice.PowerAmplifier.PABoost, 
+					//outputPower: 5, 
+					//outputPower:23,
+					//powerAmplifier: SX127XDevice.PowerAmplifier.Rfo,
+					//outputPower:-1,
+					//outputPower: 14,
 #if LORA_SENDER // From the Arduino point of view
 					rxDoneignoreIfCrcMissing: false
 #endif

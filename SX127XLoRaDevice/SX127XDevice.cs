@@ -105,6 +105,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 			RegInvertIQ2 = 0x3B,
 			RegDioMapping1 = 0x40,
 			RegVersion = 0x42,
+			RegPaDac = 0x4d,
 
 			MaxValue = RegVersion,
 		}
@@ -145,19 +146,25 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		// RegFrMsb, RegFrMid, RegFrLsb
 		private const double FrequencyDefault = 434000000.0;
 
-		// RegPAConfig
-		private const Byte RegPAConfigPASelectRFO = 0b00000000;
+		// RegPAConfig based RegPAConfigPADac with complexity hidden from user 
+		private const Byte RegPAConfigPASelectRfo = 0b00000000;
 		private const Byte RegPAConfigPASelectPABoost = 0b10000000;
-		private const Byte RegPAConfigPASelectDefault = RegPAConfigPASelectRFO;
-		public const bool PABoostDefault = false;
-
-		private const byte RegPAConfigMaxPowerMin = 0b00000000;
 		private const byte RegPAConfigMaxPowerMax = 0b01110000;
-		private const byte RegPAConfigMaxPowerDefault = 0b01000000;
 
-		private const byte RegPAConfigOutputPowerMin = 0b00000000;
-		private const byte RegPAConfigOutputPowerMax = 0b00001111;
-		private const byte RegPAConfigOutputPowerDefault = 0b00001111;
+		public enum PowerAmplifier
+		{
+			Rfo,
+			PABoost
+		}
+		public const PowerAmplifier PowerAmplifierDefault = PowerAmplifier.Rfo;
+
+		public const sbyte OutputPowerDefault = 0x0F;
+
+		// Validation constants for outputpower param
+		public const sbyte OutputPowerPABoostMin = 5;
+		public const sbyte OutputPowerPABoostMax = 23;
+		public const sbyte OutputPowerRfoMin = -1;
+		public const sbyte OutputPowerRfoMax = 14;
 
 		// RegPaRamp appears to be for FSK only ?
 
@@ -364,7 +371,16 @@ namespace devMobile.IoT.SX127xLoRaDevice
 
 		// The Semtech ID Relating to the Silicon revision
 		private const byte RegVersionValueExpected = 0x12;
-			
+
+		// RegPaDac more power
+		[Flags]
+		public enum RegPaDac
+		{
+			Normal = 0b01010100,
+			Boost = 0b01010111,
+		}
+		private const byte RegPaDacPABoostThreshold = 20;
+
 		// Hardware configuration support
 		private readonly int SpiBusId;
 		private readonly int ChipSelectLogicalPinNumber;
@@ -633,7 +649,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		public void Initialise(RegOpModeMode modeAfterInitialise, // RegOpMode
 			double frequency = FrequencyDefault, // RegFrMsb, RegFrMid, RegFrLsb
 			bool rxDoneignoreIfCrcMissing = true, bool rxDoneignoreIfCrcInvalid = true,
-			bool paBoost = false, byte maxPower = RegPAConfigMaxPowerDefault, byte outputPower = RegPAConfigOutputPowerDefault, // RegPaConfig
+			sbyte outputPower = OutputPowerDefault, PowerAmplifier powerAmplifier = PowerAmplifierDefault, // RegPAConfig & RegPaDac
 			bool ocpOn = RegOcpDefault, byte ocpTrim = RegOcpOcpTrimDefault, // RegOcp
 			RegLnaLnaGain lnaGain = LnaGainDefault, bool lnaBoost = LnaBoostDefault, // RegLna
 			RegModemConfigBandwidth bandwidth = RegModemConfigBandwidthDefault, RegModemConfigCodingRate codingRate = RegModemConfigCodingRateDefault, RegModemConfigImplicitHeaderModeOn implicitHeaderModeOn = RegModemConfigImplicitHeaderModeOnDefault, //RegModemConfig1
@@ -676,16 +692,56 @@ namespace devMobile.IoT.SX127xLoRaDevice
 				this.WriteByte((byte)Registers.RegFrLsb, bytes[0]);
 			}
 
-			// Set RegPaConfig if any of the associated settings are nto the default values
-			if ((paBoost != false) || (maxPower != RegPAConfigMaxPowerDefault) || (outputPower != RegPAConfigOutputPowerDefault))
+			// Validate the OutputPower
+			if (powerAmplifier == PowerAmplifier.Rfo)
 			{
-				byte regPaConfigValue = maxPower;
-				if (paBoost)
+				if ((outputPower < -1) || (outputPower>14))
 				{
-					regPaConfigValue |= RegPAConfigPASelectPABoost;
+					throw new ArgumentException($"outputPower must be between {-1} and {14}", nameof(outputPower));
 				}
-				regPaConfigValue |= outputPower;
-				this.WriteByte((byte)Registers.RegPAConfig, regPaConfigValue);
+			}
+			if (powerAmplifier == PowerAmplifier.PABoost)
+			{
+				if ((outputPower < 5) || (outputPower > 23))
+				{
+					throw new ArgumentException($"outputPower must be between {5} and {23}", nameof(outputPower));	
+				}
+			}
+
+			if (( powerAmplifier != PowerAmplifierDefault) || (outputPower != OutputPowerDefault))
+			{
+				byte regPAConfigValue = RegPAConfigMaxPowerMax;
+
+				if (powerAmplifier == PowerAmplifier.Rfo)
+				{
+					regPAConfigValue |= RegPAConfigPASelectRfo;
+	
+					regPAConfigValue |= (byte)(outputPower + 1);
+
+					this.WriteByte((byte)Registers.RegPAConfig, regPAConfigValue);
+				}
+
+				if (powerAmplifier == PowerAmplifier.PABoost)
+				{
+					regPAConfigValue |= RegPAConfigPASelectPABoost;
+
+					if (outputPower > RegPaDacPABoostThreshold)
+					{
+						this.WriteByte((byte)Registers.RegPaDac, (byte)RegPaDac.Boost);
+
+						regPAConfigValue |= (byte)(outputPower - 8);
+
+						this.WriteByte((byte)Registers.RegPAConfig, regPAConfigValue);
+					}
+					else
+					{
+						this.WriteByte((byte)Registers.RegPaDac, (byte)RegPaDac.Normal);
+
+						regPAConfigValue |= (byte)(outputPower - 5);
+
+						this.WriteByte((byte)Registers.RegPAConfig, regPAConfigValue);
+					}
+				}
 			}
 
 			// Set RegOcp if any of the settings not defaults
