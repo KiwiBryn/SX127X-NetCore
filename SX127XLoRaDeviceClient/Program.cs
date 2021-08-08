@@ -79,7 +79,7 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 #if LORA_SENDER // From the Arduino point of view
 					rxDoneignoreIfCrcMissing: false
 #endif
-#if LORA_RECEIVER // From the Arduino point of view
+#if LORA_RECEIVER // From the Arduino point of view, don't actually need this as already inverted
 					invertIQTX: true
 #endif
 
@@ -143,7 +143,7 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 #else
 				byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
 
-				Console.WriteLine($"{DateTime.Now:HH:mm:ss}- Length {messageBytes.Length} \"{messageText}\""); 
+				Console.WriteLine($"{DateTime.Now:HH:mm:ss}- Length {messageBytes.Length} \"{messageText}\"");
 #endif
 
 				messageCount += 1;
