@@ -338,12 +338,13 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		private const RegDetectOptimizeDectionOptimize RegDetectOptimizeDectionOptimizeDefault = RegDetectOptimizeDectionOptimize.SF7toSF12;
 
 		// RegInvertId
-		private const byte InvertIqRXOn =  0b01110110;
-		private const byte InvertIqRXOff = 0b00110110;
+		private const byte RegInvertIdDefault = 0b00100110;
+		private const byte InvertIqRXOn = 0b01000000;
+		private const byte InvertIqRXOff = 0b00000000;
 		public const bool InvertIqRXDefault = false;
 
-		private const byte InvertIqTXOn =  0b00110111; 
-		private const byte InvertIqTXOff = 0b00110110;
+		private const byte InvertIqTXOn =  0b00000001; 
+		private const byte InvertIqTXOff = 0b00000000;
 		public const bool InvertIqTXDefault = true;
 
 		private const byte RegInvertIq2On = 0x19;
@@ -869,7 +870,7 @@ namespace devMobile.IoT.SX127xLoRaDevice
 
 			if ((invertIQRX != InvertIqRXDefault) || (invertIQTX != InvertIqTXDefault))
 			{
-				byte regInvertIQValue = 0;
+				byte regInvertIQValue = RegInvertIdDefault;
 
 				if (invertIQRX)
 				{

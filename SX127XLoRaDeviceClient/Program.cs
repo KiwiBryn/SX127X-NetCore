@@ -94,15 +94,14 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 					rxDoneignoreIfCrcMissing: false
 #endif
 #if LORA_SIMPLE_NODE // From the Arduino point of view
+					invertIQTX: false,
 					rxDoneignoreIfCrcMissing: false
 #endif
 #if LORA_SIMPLE_GATEWAY // From the Arduino point of view
-					invertIQTX: true,
 					invertIQRX: true,
 					rxDoneignoreIfCrcMissing: false
 #endif
 #if LORA_DUPLEX
-					invertIQTX: true,
 					rxPayloadCrcOn: true
 #endif
 					);
@@ -190,7 +189,7 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 			{
 				messageText = UTF8Encoding.UTF8.GetString(e.Data);
 
-				Console.WriteLine($"{DateTime.Now:HH:mm:ss}-RX length {e.Data[3]} \"{messageText}\" snr {e.PacketSnr:0.0} packet rssi {e.PacketRssi}dBm rssi {e.Rssi}dBm ");
+				Console.WriteLine($"{DateTime.Now:HH:mm:ss}-RX length {e.Data.Length} \"{messageText}\" snr {e.PacketSnr:0.0} packet rssi {e.PacketRssi}dBm rssi {e.Rssi}dBm ");
 			}
 			catch (Exception ex)
 			{
