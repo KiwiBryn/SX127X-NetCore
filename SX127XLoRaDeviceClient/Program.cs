@@ -166,10 +166,17 @@ namespace devMobile.IoT.SX127XLoRaDeviceClient
 				return;
 			}
 
+			if (e.Data.Length < 4)
+			{
+				Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss}-RX Invalid payload to short");
+
+				return;
+			}
+
 			// check payload not to long/short
 			if  ((e.Data[3] + 4) != e.Data.Length)
 			{
-				Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss}-RX Invalid payload");
+				Console.WriteLine($"{DateTime.UtcNow:hh:mm:ss}-RX Invalid payload length");
 
 				return;
 			}
