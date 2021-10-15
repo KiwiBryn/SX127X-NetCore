@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <Authors>Bryn Lewis @KiwiBryn</Authors>
+    <Version>1.0.1</Version>
+    <Company>devMobile Software</Company>
+    <Product>SX127X LoRa device library</Product>
+    <Description>Library for Semtech SX127X  modules which supports sending &amp; receiving messages, with addressing and lots and lots of other configuration options.</Description>
+    <Copyright>devMobile Software, Apache License, Version 2.0</Copyright>
+    <PackageProjectUrl>https://blog.devmobile.co.nz</PackageProjectUrl>
+    <PackageTags>LoRa, Semtech, SX127X,dotnetcore, .net, .net-core,dot-net-core</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

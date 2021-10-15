@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TRACE;DRAGINO_CS0</DefineConstants>
+    <DefineConstants>TRACE;DRAGINO_CS0,LORA_DUPLEX</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
