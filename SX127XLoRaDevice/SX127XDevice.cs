@@ -181,12 +181,12 @@ namespace devMobile.IoT.SX127xLoRaDevice
 		[Flags]
 		public enum RegLnaLnaGain : byte
 		{
-			G1 = 0b00000001,
-			G2 = 0b00000010,
-			G3 = 0b00000011,
-			G4 = 0b00000100,
-			G5 = 0b00000101,
-			G6 = 0b00000110
+			G1 = 0b00100000,
+			G2 = 0b01000000,
+			G3 = 0b01100000,
+			G4 = 0b10000000,
+			G5 = 0b10100000,
+			G6 = 0b11000000
 		}
 		// Note the gain is backwards less = more
 		private const RegLnaLnaGain LnaGainDefault = RegLnaLnaGain.G1;
